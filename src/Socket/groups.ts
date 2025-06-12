@@ -329,12 +329,12 @@ export const extractGroupMetadata = (result: BinaryNode) => {
 	const descChild = getBinaryNodeChild(group, 'description')
 	let desc: string | undefined
 	let descId: string | undefined
-	let descOwner: string | undefinedAdd commentMore actions
+	let descOwner: string | undefined
 	let descOwnerJid: string | undefined
 	let descTime: number | undefined
-	if(descChild) {
+	if (descChild) {
 		desc = getBinaryNodeChildString(descChild, 'body')
-		descOwner = descChild.attrs.participant ? jidNormalizedUser(descChild.attrs.participant) : undefinedAdd commentMore actions
+		descOwner = descChild.attrs.participant ? jidNormalizedUser(descChild.attrs.participant) : undefined
 		descOwnerJid = descChild.attrs.participant_pn ? jidNormalizedUser(descChild.attrs.participant_pn) : undefined
 		descTime = +descChild.attrs.t
 		descId = descChild.attrs.id
@@ -356,7 +356,7 @@ export const extractGroupMetadata = (result: BinaryNode) => {
 		ownerJid: group.attrs.creator_pn ? jidNormalizedUser(group.attrs.creator_pn) : undefined,
 		desc,
 		descId,
-		descOwner,Add commentMore actions
+		descOwner,
 		descOwnerJid,
 		descTime,
 		linkedParent: getBinaryNodeChild(group, 'linked_parent')?.attrs.jid || undefined,
@@ -366,15 +366,13 @@ export const extractGroupMetadata = (result: BinaryNode) => {
 		isCommunityAnnounce: !!getBinaryNodeChild(group, 'default_sub_group'),
 		joinApprovalMode: !!getBinaryNodeChild(group, 'membership_approval_mode'),
 		memberAddMode,
-		participants: getBinaryNodeChildren(group, 'participant').map(
-			({ attrs }) => {
-				return {
-					id: attrs.jid,
-					jid: attrs.phone_number ? jidNormalizedUser(attrs.phone_number) : undefined,
-					admin: (attrs.type || null) as GroupParticipant['admin'],
-				}
+		participants: getBinaryNodeChildren(group, 'participant').map(({ attrs }) => {
+			return {
+				id: attrs.jid,
+				jid: attrs.phone_number ? jidNormalizedUser(attrs.phone_number) : undefined,
+				admin: (attrs.type || null) as GroupParticipant['admin']
 			}
-		),
+		}),
 		ephemeralDuration: eph ? +eph : undefined
 	}
 	return metadata
