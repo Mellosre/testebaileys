@@ -1029,6 +1029,8 @@ export const makeChatsSocket = (config: SocketConfig) => {
 		resyncAppState,
 		chatModify,
 		cleanDirtyBits,
+		addOrEditContact,
+		removeContact,
 		addLabel,
 		addChatLabel,
 		removeChatLabel,
