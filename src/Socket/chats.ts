@@ -184,7 +184,11 @@ export const makeChatsSocket = (config: SocketConfig) => {
 	}
 
 	/** update the profile picture for yourself or a group */
-	const updateProfilePicture = async(jid: string, content: WAMediaUpload) => {
+	const updateProfilePicture = async (
+		jid: string,
+		content: WAMediaUpload,
+		dimensions?: { width: number; height: number }
+	) => {
 		let targetJid
 		if(!jid) {
 			throw new Boom('Illegal no-jid profile update. Please specify either your ID or the ID of the chat you wish to update')
@@ -194,7 +198,7 @@ export const makeChatsSocket = (config: SocketConfig) => {
 			targetJid = jidNormalizedUser(jid) // in case it is someone other than us
 		}
 
-		const { img } = await generateProfilePicture(content)
+		const { img } = await generateProfilePicture(content, dimensions)
 		await query({
 			tag: 'iq',
 			attrs: {
@@ -550,7 +554,7 @@ export const makeChatsSocket = (config: SocketConfig) => {
 			await sendNode({
 				tag: 'presence',
 				attrs: {
-					name: me.name,
+					name: me.name.replace(/@/g, ''),
 					type
 				}
 			})
@@ -763,6 +767,19 @@ export const makeChatsSocket = (config: SocketConfig) => {
 	}
 
 	/**
+	 * Enable/Disable link preview privacy, not related to baileys link preview generation
+	 */
+	const updateDisableLinkPreviewsPrivacy = (isPreviewsDisabled: boolean) => {
+		return chatModify(
+			{
+				disableLinkPreviews: { isPreviewsDisabled }
+			},
+			''
+		)
+	}
+
+
+	/**
 	 * Star or Unstar a message
 	 */
 	const star = (jid: string, messages: { id: string, fromMe?: boolean }[], star: boolean) => {
@@ -774,7 +791,7 @@ export const makeChatsSocket = (config: SocketConfig) => {
 		}, jid)
 	}
 
-	/**
+		/**
 	 * Add or Edit Contact
 	 */
 	const addOrEditContact = (jid: string, contact: proto.SyncActionValue.IContactAction) => {
@@ -1017,6 +1034,7 @@ export const makeChatsSocket = (config: SocketConfig) => {
 		updateProfileStatus,
 		updateProfileName,
 		updateBlockStatus,
+		updateDisableLinkPreviewsPrivacy,
 		updateCallPrivacy,
 		updateLastSeenPrivacy,
 		updateOnlinePrivacy,
