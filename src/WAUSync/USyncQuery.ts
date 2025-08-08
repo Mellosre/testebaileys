@@ -100,4 +100,8 @@ export class USyncQuery {
 		this.protocols.push(new USyncDisappearingModeProtocol())
 		return this
 	}
+	withLIDProtocol() {
+		this.protocols.push(new USyncLIDProtocol())
+		return this
+	}
 }
