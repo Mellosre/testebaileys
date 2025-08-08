@@ -2670,6 +2670,7 @@ message SyncActionValue {
     optional LabelReorderingAction labelReorderingAction = 47;
     optional PaymentInfoAction paymentInfoAction = 48;
     optional CustomPaymentMethodsAction customPaymentMethodsAction = 49;
+    optional PrivacySettingDisableLinkPreviewsAction privacySettingDisableLinkPreviewsAction = 50;
     message AgentAction {
         optional string name = 1;
         optional int32 deviceID = 2;
@@ -2820,6 +2821,10 @@ message SyncActionValue {
     
     message PrimaryVersionAction {
         optional string version = 1;
+    }
+
+   message PrivacySettingDisableLinkPreviewsAction {
+        optional bool isPreviewsDisabled = 1;
     }
     
     message PrivacySettingRelayAllCalls {
