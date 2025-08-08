@@ -94,7 +94,6 @@ export type ChatModification =
     }
     | { delete: true, lastMessages: LastMessageList }
     | { contact: proto.SyncActionValue.IContactAction | null }
-    | { disableLinkPreviews: proto.SyncActionValue.IPrivacySettingDisableLinkPreviewsAction }
     // Label
     | { addLabel: LabelActionBody }
     // Label assosiation
